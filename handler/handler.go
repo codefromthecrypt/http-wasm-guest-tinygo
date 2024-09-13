@@ -17,7 +17,8 @@ var HandleRequestFn api.HandleRequest = func(api.Request, api.Response) (next bo
 // handleRequest is only exported to the host.
 //
 //go:export handle_request
-func handleRequest() (ctxNext uint64) { //nolint
+//go:wasmexport handle_request
+func handleRequest() (ctxNext uint64) { // nolint
 	next, reqCtx := HandleRequestFn(wasmRequest{}, wasmResponse{})
 	ctxNext = uint64(reqCtx) << 32
 	if next {
@@ -33,7 +34,8 @@ var HandleResponseFn api.HandleResponse = func(uint32, api.Request, api.Response
 // handleResponse is only exported to the host.
 //
 //go:export handle_response
-func handleResponse(reqCtx uint32, isError uint32) { //nolint
+//go:wasmexport handle_response
+func handleResponse(reqCtx uint32, isError uint32) { // nolint
 	isErrorB := false
 	if isError == 1 {
 		isErrorB = true
